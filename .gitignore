@@ -1,0 +1,27 @@
+# Maven build output
+target/
+
+# IntelliJ IDEA
+.idea/
+
+# VSCode
+.vscode/
+
+# Temporary files
+build/
+tmp/
+
+# macOS stuff
+.DS_Store
+._*
+
+# Emacs
+*~
+
+# Vim
+[._]*.s[a-v][a-z]
+!*.svg
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
