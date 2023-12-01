@@ -1,0 +1,57 @@
+name: Build Docker images
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - dockerfile: docker/flink1.17-python3.10/Dockerfile
+            tags: |
+              flink1.17-python3.10
+            cache_tag: build-cache-flink1.17-python3.10
+            args: ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Collect Docker metadata
+        id: metadata
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/lakehq/flink
+          tags: ${{ matrix.tags }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          build-args: ${{ matrix.args }}
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          provenance: mode=max
+          cache-from: type=registry,ref=ghcr.io/lakehq/flink:${{ matrix.cache_tag }}
+          cache-to: type=registry,ref=ghcr.io/lakehq/flink:${{ matrix.cache_tag }},mode=max
