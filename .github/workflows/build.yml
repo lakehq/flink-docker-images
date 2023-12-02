@@ -9,13 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix:
         include:
           - dockerfile: docker/flink1.17-python3.10/Dockerfile
             tags: |
-              flink1.17-python3.10
-            cache_tag: build-cache-flink1.17-python3.10
+              1.17-python3.10
+            cache_tag: build-cache-1.17-python3.10
             args: ''
     steps:
       - name: Checkout
@@ -39,7 +42,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
