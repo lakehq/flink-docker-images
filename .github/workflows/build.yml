@@ -18,7 +18,7 @@ jobs:
           - dockerfile: docker/flink1.17-python3.10/Dockerfile
             tags: |
               1.17-python3.10
-            cache_tag: build-cache-1.17-python3.10
+            cache_tag: 1.17-python3.10
             args: ''
     steps:
       - name: Checkout
@@ -56,5 +56,5 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           provenance: mode=max
-          cache-from: type=registry,ref=ghcr.io/lakehq/flink:${{ matrix.cache_tag }}
-          cache-to: type=registry,ref=ghcr.io/lakehq/flink:${{ matrix.cache_tag }},mode=max
+          cache-from: type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ matrix.cache_tag }}
+          cache-to: type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ matrix.cache_tag }},mode=max
