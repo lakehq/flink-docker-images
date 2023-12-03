@@ -15,10 +15,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - dockerfile: docker/flink1.17-python3.10/Dockerfile
-            tags: |
-              1.17-python3.10
-            cache_tag: 1.17-python3.10
+          - directory: flink1.17
+            tag: 1.17.1-python3.10
             args: ''
     steps:
       - name: Checkout
@@ -36,7 +34,8 @@ jobs:
         with:
           images: |
             ghcr.io/lakehq/flink
-          tags: ${{ matrix.tags }}
+          tags: |
+            ${{ matrix.tag }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -49,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: docker/${{ matrix.directory }}/Dockerfile
           build-args: ${{ matrix.args }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
@@ -57,7 +56,7 @@ jobs:
           labels: ${{ steps.metadata.outputs.labels }}
           provenance: mode=max
           cache-from: |
-            type=registry,ref=ghcr.io/lakehq/flink-build-cache:main-${{ matrix.cache_tag }}
-            type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.cache_tag }}
+            type=registry,ref=ghcr.io/lakehq/flink-build-cache:main-${{ matrix.tag }}
+            type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.tag }}
           cache-to: |
-            type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.cache_tag }},mode=max
+            type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.tag }},mode=max
