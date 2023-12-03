@@ -56,5 +56,8 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           provenance: mode=max
-          cache-from: type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ matrix.cache_tag }}
-          cache-to: type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ matrix.cache_tag }},mode=max
+          cache-from: |
+            type=registry,ref=ghcr.io/lakehq/flink-build-cache:main-${{ matrix.cache_tag }}
+            type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.cache_tag }}
+          cache-to: |
+            type=registry,ref=ghcr.io/lakehq/flink-build-cache:${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}-${{ matrix.cache_tag }},mode=max
