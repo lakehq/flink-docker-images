@@ -1,23 +1,14 @@
 ARG FLINK_VERSION=1.17.1
-ARG MAVEN_VERSION=3.8.6
-
-FROM maven:${MAVEN_VERSION}-amazoncorretto-8 AS tools
-
-COPY pom.xml /app/pom.xml
-COPY tools /app/tools
-
-RUN --mount=type=cache,target=/root/.m2,sharing=locked \
-    cd /app && \
-    mvn package && \
-    mkdir /output && \
-    cp tools/flink-fs-utils/target/*.jar /output
-
-FROM flink:$FLINK_VERSION AS final
-
-ARG FLINK_VERSION
 ARG FLINK_SCALA_VERSION=2.12
 ARG PYTHON_PYENV_VERSION=2.3.29
 ARG PYTHON_VERSION=3.10.11
+ARG MAVEN_VERSION=3.8.6
+
+FROM flink:$FLINK_VERSION AS base
+
+ARG FLINK_VERSION
+ARG PYTHON_PYENV_VERSION
+ARG PYTHON_VERSION
 
 RUN set -eux; \
     savedAptMark="$(apt-mark showmanual)"; \
@@ -79,6 +70,22 @@ RUN set -eux; \
     apt-get clean -y; \
     rm -rf /var/lib/apt/lists/*; \
     python3 --version
+
+FROM maven:${MAVEN_VERSION}-amazoncorretto-8 AS tools
+
+COPY pom.xml /app/pom.xml
+COPY tools /app/tools
+
+RUN --mount=type=cache,target=/root/.m2,sharing=locked \
+    cd /app && \
+    mvn package && \
+    mkdir /output && \
+    cp tools/flink-fs-utils/target/*.jar /output
+
+FROM base AS final
+
+ARG FLINK_VERSION
+ARG FLINK_SCALA_VERSION
 
 # https://github.com/apache/hudi/issues/8265
 RUN rm /opt/flink/lib/flink-table-planner-loader-${FLINK_VERSION}.jar && \
