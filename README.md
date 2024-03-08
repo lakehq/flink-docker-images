@@ -21,7 +21,7 @@ docker pull ghcr.io/lakehq/flink:$TAG
 Use the following command(s) to build the images locally.
 
 ```bash
-docker build . -t lakehq/flink:1.18.1-python3.11
+docker build . -t lakehq/flink:1.18.1-python3.10
 ```
 
 ## References
@@ -37,6 +37,7 @@ docker build . -t lakehq/flink:1.18.1-python3.11
 * [Status of Python Versions](https://devguide.python.org/versions/)
 * [Python 3.10 Release Schedule](https://peps.python.org/pep-0619/)
 * [Python 3.11 Release Schedule](https://peps.python.org/pep-0664/)
+* [Python 3.12 Release Schedule](https://peps.python.org/pep-0693/)
 
 ## License
 
