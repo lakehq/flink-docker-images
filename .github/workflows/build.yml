@@ -15,8 +15,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - directory: flink1.17
-            tag: 1.17.1-python3.10
+          - tag: 1.17.2-python3.10
+            args: |
+              FLINK_VERSION=1.17.2
+              PYTHON_VERSION=3.10.13
+          - tag: 1.18.1-python3.10
             args: ''
     steps:
       - name: Checkout
@@ -48,7 +51,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/${{ matrix.directory }}/Dockerfile
           build-args: ${{ matrix.args }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}

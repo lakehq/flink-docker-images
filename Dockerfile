@@ -1,7 +1,7 @@
-ARG FLINK_VERSION=1.17.1
+ARG FLINK_VERSION=1.18.1
 ARG FLINK_SCALA_VERSION=2.12
-ARG PYTHON_PYENV_VERSION=2.3.29
-ARG PYTHON_VERSION=3.10.11
+ARG PYTHON_PYENV_VERSION=2.3.36
+ARG PYTHON_VERSION=3.10.13
 ARG MAVEN_VERSION=3.8.6
 
 FROM flink:$FLINK_VERSION AS base
@@ -73,11 +73,14 @@ RUN set -eux; \
 
 FROM maven:${MAVEN_VERSION}-amazoncorretto-8 AS tools
 
+ARG FLINK_VERSION
+
 COPY pom.xml /app/pom.xml
 COPY tools /app/tools
 
 RUN --mount=type=cache,target=/root/.m2,sharing=locked \
     cd /app && \
+    mvn versions:set -DnewVersion=${FLINK_VERSION} -DgenerateBackupPoms=false && \
     mvn package && \
     mkdir /output && \
     cp tools/flink-fs-utils/target/*.jar /output
@@ -92,4 +95,4 @@ RUN rm /opt/flink/lib/flink-table-planner-loader-${FLINK_VERSION}.jar && \
     cp /opt/flink/opt/flink-table-planner_${FLINK_SCALA_VERSION}-${FLINK_VERSION}.jar /opt/flink/lib/
 
 COPY --from=tools /output/*.jar /opt/flink/opt/
-COPY bin/flink-fs-cp-${FLINK_VERSION}.sh /opt/flink/bin/flink-fs-cp.sh
+COPY bin/flink-fs-cp.sh /opt/flink/bin/flink-fs-cp.sh
