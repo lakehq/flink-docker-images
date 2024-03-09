@@ -1,15 +1,17 @@
 # Flink Docker Images
 
-This repository offers a set of Apache Flink Docker images maintained by LakeSail.
+This repository offers a set of Apache Flink Docker images maintained by [LakeSail](https://lakesail.com/).
 The LakeSail versions of the Flink Docker images are based on the official Flink Docker images and include additional features such as Python support.
 
-Use the following command to pull the image from GitHub Container Registry.
+Use the following command to pull the images from GitHub Container Registry.
 Replace `$TAG` with the desired tag.
 A list of available tags can be found in the [package homepage](https://github.com/orgs/lakehq/packages/container/package/flink).
 
 ```bash
 docker pull ghcr.io/lakehq/flink:$TAG
 ```
+
+More details about the images can be found in the [documentation](https://docs.lakesail.com/flink-docker-images/).
 
 ## GitHub Container Registry Packages
 
@@ -28,8 +30,10 @@ docker build . -t lakehq/flink:1.18.1-python3.10
 
 ### Apache Flink Releases
 
+* [Apache Flink 1.17.0 Release Announcement](https://flink.apache.org/2023/03/23/announcing-the-release-of-apache-flink-1.17/)
 * [Apache Flink 1.17.1 Release Announcement](https://flink.apache.org/2023/05/25/apache-flink-1.17.1-release-announcement/)
 * [Apache Flink 1.17.2 Release Announcement](https://flink.apache.org/2023/11/29/apache-flink-1.17.2-release-announcement/)
+* [Apache Flink 1.18.0 Release Announcement](https://flink.apache.org/2023/10/24/announcing-the-release-of-apache-flink-1.18/)
 * [Apache Flink 1.18.1 Release Announcement](https://flink.apache.org/2024/01/19/apache-flink-1.18.1-release-announcement/)
 
 ### Python Versions
