@@ -2,9 +2,9 @@ name: Build Docker images
 
 on:
   push:
-    branches: [main]
+    branches: [main, release-*]
   pull_request:
-    branches: [main]
+    branches: [main, release-*]
 
 jobs:
   build:
@@ -15,10 +15,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - tag: 1.17.2-python3.10
-            args: |
-              FLINK_VERSION=1.17.2
-              PYTHON_VERSION=3.10.13
           - tag: 1.18.1-python3.10
             args: ''
     steps:
