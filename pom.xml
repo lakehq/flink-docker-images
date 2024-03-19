@@ -10,7 +10,7 @@
 
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-docker-images</artifactId>
-    <version>1.18-SNAPSHOT</version>
+    <version>1.17-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
