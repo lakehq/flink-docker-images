@@ -30,9 +30,6 @@ docker build . -t lakehq/flink:1.18.1-python3.10
 
 ### Apache Flink Releases
 
-* [Apache Flink 1.17.0 Release Announcement](https://flink.apache.org/2023/03/23/announcing-the-release-of-apache-flink-1.17/)
-* [Apache Flink 1.17.1 Release Announcement](https://flink.apache.org/2023/05/25/apache-flink-1.17.1-release-announcement/)
-* [Apache Flink 1.17.2 Release Announcement](https://flink.apache.org/2023/11/29/apache-flink-1.17.2-release-announcement/)
 * [Apache Flink 1.18.0 Release Announcement](https://flink.apache.org/2023/10/24/announcing-the-release-of-apache-flink-1.18/)
 * [Apache Flink 1.18.1 Release Announcement](https://flink.apache.org/2024/01/19/apache-flink-1.18.1-release-announcement/)
 
